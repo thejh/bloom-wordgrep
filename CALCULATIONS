@@ -1,0 +1,29 @@
+500 hashes per bloom
+angenommen, 3 positionen von 512 (64 bytes):
+  p=1/512 n=1500 X=0  =>  P=0.0533 für eine einzelne position auf 0
+  p=0.0533 n=3 X>0  =>  P=0.1515 für drei, dass einer mindestens 0 ist
+4 positionen:
+  p=1/512 n=2000 X=0  =>  P=0.02 für eine einzelne position auf 0
+  p=0.02 n=4 X>0  =>  P=0.077
+1 position:
+  p=1/512 n=500 X=0  =>  P=0.38 für eine einzelne position auf 0
+  => 62% false positives :(
+
+
+1pos, 1024bit: 61% accuracy
+2pos, 1024bit: 61% accuracy
+3pos, 1024bit: 55% accuracy
+
+1pos, 4096bit: 88.5% accuracy
+2pos, 4096bit: 95.3% accuracy
+3pos, 4096bit: 97.1% accuracy
+4pos, 4096bit: 97.8% accuracy
+5pos, 4096bit: 98.0% accuracy
+6pos, 4096bit: 98.0% accuracy
+7pos, 4096bit: 97.9% accuracy
+...
+9pos, 4096bit: 97.4% accuracy
+
+
+=> the filter is 4096/8=512 bytes
+=> we'll use log2(4096)=12 bits of the hash, bitmask is 0xfff

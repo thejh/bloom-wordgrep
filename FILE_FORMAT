@@ -1,0 +1,3 @@
+undelimited list of entries. entry format:
+ - null-terminated path
+ - raw bloom filter
