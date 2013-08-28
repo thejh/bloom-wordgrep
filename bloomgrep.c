@@ -2,20 +2,20 @@
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    puts("wrong invocation, please use `makebloom folder word1[,word2[,...]]`");
+    fputs("wrong invocation, please use `makebloom folder word1[,word2[,...]]`", stderr);
     return 1;
   }
   char *folder = argv[1];
   
   char *oldcwd = get_current_dir_name();
   if (chdir(folder) != 0) {
-    puts("can't change folder. aborting.");
+    fputs("can't change folder. aborting.", stderr);
     return 1;
   }
   
   FILE *bloom_file = fopen(".wordgrep_bloom.db", "r");
   if (bloom_file == NULL) {
-    printf("can't open bloom file for reading: %s. aborting.\n", strerror(errno));
+    fprintf(stderr, "can't open bloom file for reading: %s. aborting.\n", strerror(errno));
     return 1;
   }
   
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
         goto continue_fileloop;
       }
     }
-    printf("possible match in %s\n", p);
+    printf("%s\n", p);
     match_count++;
 continue_fileloop:
     file_count++;
@@ -61,7 +61,7 @@ end:
   chdir(oldcwd);
   free(oldcwd);
   
-  printf("stats: %i files searched, %i hits (%f%%)\n", file_count, match_count, 100 * match_count / (double) file_count);
+  fprintf(stderr, "stats: %i files searched, %i hits (%f%%)\n", file_count, match_count, 100 * match_count / (double) file_count);
   
   return 0;
 }
