@@ -2,7 +2,7 @@
 
 int main(int argc, char *argv[]) {
   if (argc < 3) {
-    fputs("wrong invocation, please use `makebloom folder word1[,word2[,...]]`", stderr);
+    fputs("wrong invocation, please use `bloomgrep folder word1[,word2[,...]]`", stderr);
     return 1;
   }
   char *folder = argv[1];
