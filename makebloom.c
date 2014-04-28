@@ -1,6 +1,15 @@
 #include "common.h"
+#include <stdbool.h>
 
-void bloom_add_folder(path *path, FILE *bloom_file) {
+static char **folder_blacklist;
+
+static bool folder_bad(char *name) {
+  for (char **badp = folder_blacklist; *badp != NULL; badp++)
+    if (!strcmp(*badp, name)) return true;
+  return false;
+}
+
+static void bloom_add_folder(path *path, FILE *bloom_file) {
   char *oldnull = *path + strlen(*path);
   DIR *d = opendir(*path);
   if (d == NULL) {
@@ -35,8 +44,10 @@ void bloom_add_folder(path *path, FILE *bloom_file) {
         puts("warning: dirent with unknown type, too lazy to stat it");
         break;
       case DT_DIR:
-        strcat(*path, "/");
-        bloom_add_folder(path, bloom_file);
+        if (!folder_bad(e.d_name)) {
+          strcat(*path, "/");
+          bloom_add_folder(path, bloom_file);
+        }
         break;
       case DT_REG:
         f = fopen(*path, "r");
@@ -60,11 +71,12 @@ void bloom_add_folder(path *path, FILE *bloom_file) {
 }
 
 int main(int argc, char *argv[]) {
-  if (argc != 2) {
-    puts("wrong invocation, please use `makebloom folder`");
+  if (argc < 2) {
+    puts("wrong invocation, please use `makebloom folder [badfolder1 [badfolder2 [...]]`");
     return 1;
   }
   char *folder = argv[1];
+  folder_blacklist = argv+2;
   
   char *oldcwd = get_current_dir_name();
   if (chdir(folder) != 0) {
