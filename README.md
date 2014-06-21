@@ -72,3 +72,21 @@ user    0m0.292s
 sys     0m0.406s
 
 ```
+
+Someone asked me how long makebloom (the initial generation of the
+bloom filters) takes compared to a regular recursive grep, so here's
+a little benchmark with warm caches (YMMV):
+```
+$ time ./makebloom.sh >/dev/null 2>&1
+
+real    2m8.220s
+user    0m39.973s
+sys     0m12.849s
+
+$ time grep -RF --exclude-dir .git --exclude-dir out --exclude-dir test --exclude-dir LayoutTests --exclude-dir ManualTests --exclude-dir toolchain --exclude-dir hunspell_dictionaries --exclude-dir theme --exclude-dir test_data --exclude-dir PerformanceTests indexArrayArgument >/dev/null 2>&1
+
+real    1m28.150s
+user    0m1.870s
+sys     0m10.897s
+
+```
