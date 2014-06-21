@@ -4,8 +4,6 @@ Grep large folders for words using bloom filters. This speeds up the search
 massively because the bloomfilter can, even just given one word, reduce the
 number of files that need to be searched by around 97-99%.
 
-As an example, 
-
 In this context, "word"
 means something that matches [a-zA-Z_] but is not surrounded by one of
 those characters (see `make_bloom_from_file` in `common.c` if this sounds
