@@ -55,6 +55,11 @@ static void bloom_add_folder(path *path, FILE *bloom_file) {
           puts("warning: fopen() failed");
           break;
         }
+        if (!is_text_file(f)) {
+          printf("ignoring %s (binary)\n", *path);
+          fclose(f);
+          break;
+        }
         assert(fwrite(*path, strlen(*path)+1, 1, bloom_file) == 1);
         printf("blooming %s\n", *path);
         bloom_filter filter;

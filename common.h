@@ -9,9 +9,11 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <unistd.h>
+#include <stdbool.h>
 
 typedef unsigned char bloom_filter[512];
 typedef char path[4096];
 
 void make_bloom_from_file(FILE *f, unsigned char *filter);
 void update_bloom(bloom_filter filter, unsigned char *str);
+bool is_text_file(FILE *f);

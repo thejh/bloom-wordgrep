@@ -73,3 +73,20 @@ void make_bloom_from_file(FILE *f, unsigned char *filter) {
     exit(1);
   }
 }
+
+bool is_text_file(FILE *f) {
+  rewind(f);
+  char head[1000];
+  size_t len = fread(head, 1, sizeof(head), f);
+  if (ferror(f)) {
+    puts("error occured while reading a file - exiting.");
+    exit(1);
+  }
+  if (len == 0) return false;
+  int clean_chars = 0;
+  for (int i = 0; i < len; i++) {
+    char c = head[i];
+    if ((c >= 0x20 && c <= 0x7E) || (c == '\t' || c == '\r' || c == '\n')) clean_chars++;
+  }
+  return clean_chars * 4 / len >= 3; // at least 3/4 should look like clean ASCII
+}
