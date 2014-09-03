@@ -68,5 +68,8 @@ void make_bloom_from_file(FILE *f, unsigned char *filter) {
       buf_i = 0;
     }
   }
-  return 0;
+  if (ferror(f)) {
+    puts("error occured while reading a file - exiting.");
+    exit(1);
+  }
 }

@@ -13,5 +13,5 @@
 typedef unsigned char bloom_filter[512];
 typedef char path[4096];
 
-int make_bloom_from_file(FILE *f, unsigned char *filter);
+void make_bloom_from_file(FILE *f, unsigned char *filter);
 void update_bloom(bloom_filter filter, unsigned char *str);
