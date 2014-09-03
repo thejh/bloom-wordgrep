@@ -39,7 +39,7 @@ int check_bloom(bloom_filter filter, unsigned char *str) {
     int filter_index = str_hash / 8;
     int bit_index = str_hash % 8;
     
-    if (filter[filter_index] & (1 << bit_index) == 0) {
+    if ((filter[filter_index] & (1 << bit_index)) == 0) {
       (*str) -= i;
       return 0;
     }
@@ -50,7 +50,7 @@ int check_bloom(bloom_filter filter, unsigned char *str) {
   return 1;
 }
 
-int make_bloom_from_file(FILE *f, unsigned char *filter) {
+void make_bloom_from_file(FILE *f, unsigned char *filter) {
   rewind(f);
   unsigned char buf[1024];
   int buf_i = 0;
