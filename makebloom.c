@@ -34,7 +34,7 @@ static void bloom_add_folder(path *path, FILE *bloom_file) {
       closedir(d);
       return;
     }
-    if (!strcmp(e.d_name, ".") || !strcmp(e.d_name, "..") || !strcmp(e.d_name, ".wordgrep_bloom.db")) {
+    if (e.d_name[0] == '.') {
       continue;
     }
     strcat(*path, e.d_name);
