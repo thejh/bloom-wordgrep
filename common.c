@@ -1,6 +1,6 @@
 #include "common.h"
 
-#define NUMBER_OF_ROUNDS 2
+#define NUMBER_OF_ROUNDS 4
 
 // djb2 string hash function
 unsigned long
