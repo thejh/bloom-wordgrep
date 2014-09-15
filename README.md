@@ -9,6 +9,9 @@ means something that matches `[a-zA-Z_]` but is not surrounded by one of
 those characters (see `make_bloom_from_file` in `common.c` if this sounds
 too complicated.)
 
+Compile with `compile.sh`, then link/copy the binaries and `wordgrep.sh` into
+your path.
+
 Basic usage:
 
     cd <some project folder>
@@ -26,6 +29,9 @@ More practical:
     # show all lines in the whole source tree that match "alert(.*error"
     bloomgrep . alert error | xargs grep -w 'alert(.*error'
 
+    # simple wrapper: find all occurences of the word `indexArrayArgument` in the source
+    wordgrep.sh indexArrayArgument
+
 
 This is how I use this for the Chromium source tree:
 
@@ -37,11 +43,7 @@ $ cat makebloom.sh
 #!/bin/sh
 makebloom . .git out test LayoutTests ManualTests toolchain hunspell_dictionaries theme test_data PerformanceTests
 
-$ cat wordgrep.sh 
-#!/bin/sh
-bloomgrep . "$1" | xargs grep "$1"
-
-$ ./wordgrep.sh indexArrayArgument
+$ wordgrep.sh indexArrayArgument
 stats: 93820 files searched, 2662 hits (2.837348%)
 ./src/third_party/WebKit/Source/bindings/v8/custom/V8WebGLRenderingContextCustom.cpp:    const int indexArrayArgument = 1;
 ./src/third_party/WebKit/Source/bindings/v8/custom/V8WebGLRenderingContextCustom.cpp:    if (V8Float32Array::hasInstance(info[indexArrayArgument], info.GetIsolate())) {
@@ -64,7 +66,7 @@ by the bloomfilters having a fixed per-file length.
 With this, grepping the whole Chromium source tree just takes 4 seconds on my PC (with warm caches):
 
 ```
-$ time ./wordgrep.sh indexArrayArgument
+$ time wordgrep.sh indexArrayArgument
 stats: 93820 files searched, 2662 hits (2.837348%)
 [...]
 real    0m3.516s
